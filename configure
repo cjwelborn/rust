@@ -463,6 +463,12 @@ then
     CFG_LIBDIR_RELATIVE=bin
 fi
 
+# Temporarily support the old windows triples while the bots make the transition
+# XXX Remove me
+CFG_BUILD=`echo "${CFG_BUILD}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
+CFG_HOST=`echo "${CFG_HOST}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
+CFG_TARGET=`echo "${CFG_TARGET}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
+
 valopt libdir "${CFG_PREFIX}/${CFG_LIBDIR_RELATIVE}" "install libraries"
 
 if [ $HELP -eq 1 ]
