@@ -306,11 +306,11 @@ case $CFG_OSTYPE in
         # instead, msys defines $MSYSTEM which is MINGW32 on i686 and
         # MINGW64 on x86_64.
         CFG_CPUTYPE=i686
-        CFG_OSTYPE=pc-mingw32
+        CFG_OSTYPE=pc-windows-gnu
         if [ "$MSYSTEM" = MINGW64 ]
         then
             CFG_CPUTYPE=x86_64
-            CFG_OSTYPE=w64-mingw32
+            CFG_OSTYPE=pc-windows-gnu
         fi
         ;;
 
@@ -458,7 +458,7 @@ valopt mandir "${CFG_PREFIX}/share/man" "install man pages in PATH"
 # --libdir is used to configure the installation directory.
 # FIXME: Thise needs to parameterized over target triples. Do it in platform.mk
 CFG_LIBDIR_RELATIVE=lib
-if [ "$CFG_OSTYPE" = "pc-mingw32" ] || [ "$CFG_OSTYPE" = "w64-mingw32" ]
+if [ "$CFG_OSTYPE" = "pc-windows-gnu" ]
 then
     CFG_LIBDIR_RELATIVE=bin
 fi
@@ -468,6 +468,10 @@ fi
 CFG_BUILD=`echo "${CFG_BUILD}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
 CFG_HOST=`echo "${CFG_HOST}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
 CFG_TARGET=`echo "${CFG_TARGET}" | sed 's/-pc-mingw32/-w64-mingw32/g'`
+
+CFG_BUILD=`echo "${CFG_BUILD}" | sed 's/-w64-mingw32/-pc-windows-gnu/g'`
+CFG_HOST=`echo "${CFG_HOST}" | sed 's/-w64-mingw32/-pc-windows-gnu/g'`
+CFG_TARGET=`echo "${CFG_TARGET}" | sed 's/-w64-mingw32/-pc-windows-gnu/g'`
 
 valopt libdir "${CFG_PREFIX}/${CFG_LIBDIR_RELATIVE}" "install libraries"
 
@@ -569,7 +573,7 @@ then
 fi
 
 BIN_SUF=
-if [ "$CFG_OSTYPE" = "pc-mingw32" ] || [ "$CFG_OSTYPE" = "w64-mingw32" ]
+if [ "$CFG_OSTYPE" = "pc-windows-gnu" ]
 then
     BIN_SUF=.exe
 fi
@@ -1034,6 +1038,14 @@ do
         LLVM_HOST="--host=$t"
         LLVM_TARGET="--target=$t"
 
+        # Even though recent LLVM supports the new canonical
+        # -pc-windows-gnu triples it's configure script seems not to!
+        # Furthermore, older LLVM's that we remain compatible with don't either,
+        # so we have to 'decanonicalize' them for LLVM's benefit.
+        LLVM_BUILD=`echo "${LLVM_BUILD}" | sed 's/-pc-windows-gnu/-w64-mingw32/g'`
+        LLVM_HOST=`echo "${LLVM_HOST}" | sed 's/-pc-windows-gnu/-w64-mingw32/g'`
+        LLVM_TARGET=`echo "${LLVM_TARGET}" | sed 's/-pc-windows-gnu/-w64-mingw32/g'`
+
         # Disable unused LLVM features
         LLVM_OPTS="$LLVM_DBG_OPTS $LLVM_ASSERTION_OPTS --disable-docs --enable-bindings=none"
         # Disable term-info, linkage of which comes in multiple forms,
@@ -1046,7 +1058,7 @@ do
         # (llvm's configure tries to find pthread first, so we have to disable it explicitly.)
         # Also note that pthreads works badly on mingw-w64 systems: #8996
         case "$CFG_BUILD" in
-            (*-mingw32)
+            (*-pc-windows-gnu)
             LLVM_OPTS="$LLVM_OPTS --disable-pthreads"
             ;;
         esac
