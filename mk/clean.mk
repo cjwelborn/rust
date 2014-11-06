@@ -35,7 +35,13 @@ clean-all: clean clean-llvm
 
 clean-llvm: $(CLEAN_LLVM_RULES)
 
+ifndef AUTOMATION_HACK
 clean: clean-misc $(CLEAN_STAGE_RULES)
+
+else
+clean: clean-misc
+
+endif
 
 clean-misc:
 	@$(call E, cleaning)

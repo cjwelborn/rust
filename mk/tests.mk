@@ -153,7 +153,13 @@ endif
 ######################################################################
 
 # The main testing target. Tests lots of stuff.
+ifndef AUTOMATION_HACK
 check: cleantmptestlogs cleantestlibs check-notidy tidy
+
+else
+check:
+
+endif
 
 # As above but don't bother running tidy.
 check-notidy: cleantmptestlogs cleantestlibs all check-stage2

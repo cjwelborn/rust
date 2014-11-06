@@ -1366,6 +1366,10 @@ do
     putvar $CFG_LLVM_INST_DIR
 done
 
+# Simulate the build
+AUTOMATION_HACK=1
+putvar AUTOMATION_HACK
+
 # Munge any paths that appear in config.mk back to posix-y
 perl -i.bak -p -e 's@ ([a-zA-Z]):[/\\]@ /\1/@go;' config.tmp
 rm -f config.tmp.bak
@@ -1379,3 +1383,4 @@ touch config.stamp
 step_msg "complete"
 msg "run \`make help\`"
 msg
+

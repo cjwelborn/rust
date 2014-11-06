@@ -375,6 +375,8 @@ MAYBE_DIST_DOCS=dist-docs
 MAYBE_DISTCHECK_DOCS=distcheck-docs
 endif
 
+ifndef AUTOMATION_HACK
+
 dist: $(MAYBE_DIST_TAR_SRC) dist-osx dist-win dist-tar-bins $(MAYBE_DIST_DOCS)
 
 distcheck: $(MAYBE_DISTCHECK_TAR_SRC) distcheck-osx distcheck-win distcheck-tar-bins $(MAYBE_DISTCHECK_DOCS)
@@ -383,5 +385,17 @@ distcheck: $(MAYBE_DISTCHECK_TAR_SRC) distcheck-osx distcheck-win distcheck-tar-
 	@echo -----------------------------------------------
 	@echo "Rust ready for distribution (see ./dist)"
 	@echo -----------------------------------------------
+
+else
+
+dist:
+	mkdir -p dist/doc/$(CFG_RELEASE_CHANNEL)
+	touch dist/$(PKG_NAME)-src.tar.gz
+	touch dist/$(PKG_NAME)-$(CFG_BUILD).tar.gz
+	touch dist/doc/$(CFG_RELEASE_CHANNEL)/index.html
+
+distcheck: dist
+
+endif
 
 .PHONY: dist distcheck
