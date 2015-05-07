@@ -81,9 +81,8 @@ Libraries
   `String::from`][sf].
 * [`io::Error` implements `Sync`][ios].
 * [The `words` method on `&str` has been replaced with
-  `split_whitespace`, to avoid answering the tricky question, 'what is
-  a word?'][sw].
-
+  `split_whitespace`][sw], to avoid answering the tricky question, 'what is
+  a word?'
 * The new path and IO modules are complete and `#[stable]`. This
   was the major library focus for this cycle.
 * The path API was [revised][path-normalize] to normalize `.`,
@@ -135,6 +134,7 @@ Misc
 [lex]: https://github.com/rust-lang/rfcs/blob/master/text/0879-small-base-lexing.md
 [lt]: https://github.com/rust-lang/rust/pull/24057
 [meth]: https://github.com/rust-lang/rust/pull/24056
+[pat]: https://github.com/rust-lang/rfcs/blob/master/text/0528-string-patterns.md
 [po]: https://github.com/rust-lang/rust/pull/24270
 [sf]: https://github.com/rust-lang/rust/pull/24517
 [slp]: https://github.com/rust-lang/rust/pull/23949
