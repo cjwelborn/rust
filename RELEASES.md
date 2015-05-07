@@ -1,5 +1,91 @@
+Version 1.0.0 (May 2015)
+========================
+
+* ~420 changes, numerous bugfixes
+
+Highlights
+----------
+
+* Most of the standard library is now stable and will not change.
+
+Language
+--------
+
+* Several [restrictions have been added to trait coherence][coh] in
+  order to make it easier for upstream authors to change traits
+  without breaking downsteam code.
+* Digits of binary and octal literals are [lexed more eagerly][lex] to
+  improve error messages and macro behavior. For example, `0b1234` is
+  now lexed as `0b1234` instead of two tokens, `0b1` and `34`.
+* Trait bounds [are always invariant][inv], eleminating the need for
+  the `PhantomFn` and `MarkerTrait` lang items, which have been
+  removed.
+* ["-" is no longer a valid character in crate names, the `extern crate
+  "foo" as bar` syntax has been replaced with `extern crate foo as
+  bar`, and Cargo now automatically translates "-" in *package* names
+  to "_" for the crate name][cr].
+* [Lifetime shadowing is an error][lt].
+
+Libraries
+---------
+
+* The `thread_local` module [has been renamed to `std::thread`][th].
+* The methods of `IteratorExt` [have been moved to the `Iterator`
+  trait itself][ie].
+* Several traits that implement Rust's conventions for type
+  conversions, `AsMut`, `AsRef`, `From`, and `Into` have been
+  [centralized in the `std::convert` module][con].
+* The `FromError` trait [was removed in favor of `From`][fe].
+* The basic sleep function [has moved to
+  `std::thread::sleep_ms`][slp].
+* The `splitn` function now takes an `n` parameter that represents the
+  number of items yielded by the returned iterator [instead of the
+  number of 'splits'][spl].
+* [On Unix, all file descriptors are `CLOEXEC` by default][clo].
+* [Derived implementations of `PartialOrd` now order enums according
+  to their explicitly-assigned discriminants][po].
+* [Methods for searching strings are generic over `Pattern`s][pat],
+  implemented presently by `&char`, `&str`, `FnMut(char) -> bool` and
+  some others.
+* [In method resolution, object methods are resolved before inherent
+  methods][meth].
+* [`String::from_str` has been deprecated in favor of the `From` impl,
+  `String::from`][sf].
+* [`io::Error` implements `Sync`][ios].
+* [The `words` method on `&str` has been replaced with
+  `split_whitespace`, to avoid answering the tricky question, 'what is
+  a word?'][sw].
+
+Misc
+----
+
+* Many errors now have extended explanations that can be accessed with
+  the `--explain` flag to `rustc`.
+* Many new examples have been added to the standard library
+  documentation.
+* rustdoc has received a number of improvements focused on completion
+  and polish.
+
+[clo]: https://github.com/rust-lang/rust/pull/24034
+[coh]: https://github.com/rust-lang/rfcs/blob/master/text/1023-rebalancing-coherence.md
+[con]: https://github.com/rust-lang/rust/pull/23875
+[cr]: https://github.com/rust-lang/rust/pull/23419
+[ef]: https://github.com/rust-lang/rust/pull/23879
+[ie]: https://github.com/rust-lang/rust/pull/23300
+[inv]: https://github.com/rust-lang/rust/pull/23938
+[ios]: https://github.com/rust-lang/rust/pull/24133
+[lex]: https://github.com/rust-lang/rfcs/blob/master/text/0879-small-base-lexing.md
+[lt]: https://github.com/rust-lang/rust/pull/24057
+[meth]: https://github.com/rust-lang/rust/pull/24056
+[po]: https://github.com/rust-lang/rust/pull/24270
+[sf]: https://github.com/rust-lang/rust/pull/24517
+[slp]: https://github.com/rust-lang/rust/pull/23949
+[spl]: https://github.com/rust-lang/rfcs/blob/master/text/0979-align-splitn-with-other-languages.md
+[sw]: https://github.com/rust-lang/rfcs/blob/master/text/1054-str-words.md
+[th]: https://github.com/rust-lang/rfcs/blob/master/text/0909-move-thread-local-to-std-thread.md
+
 Version 1.0.0-beta (April 2015)
--------------------------------------
+===============================
 
 * ~1100 changes, numerous bugfixes
 
